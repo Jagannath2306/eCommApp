@@ -1,0 +1,48 @@
+
+module.exports = {
+    components: {
+        schemas: {
+        UserRegister: {
+          type: "object",
+          required: ["firstName", "lastName", "email","userTypeId", "password"],
+          properties: {
+            firstName: { type: "string" },
+            lastName: { type: "string" },
+            email: { type: "string" },
+            userTypeId: { type: "string" },
+            password: { type: "string" },
+            confirmPassword: { type: "string" }
+          },
+        },
+
+        UserLogin: {
+            type: "object",
+            required: ["email", "password"],
+            properties: {
+                email: { type: "string" },
+                password: { type: "string" }
+            },
+          },
+
+        UpdateProfile :{
+            type: "object",
+            required: ["firstName", "lastName"],
+            properties: {
+                firstName: { type: "string" },
+                lastName: { type: "string" }
+            },
+        },
+        GetAllUser: {
+            type: "object",
+            required: ['pageSize', 'page', "sortCol", "sort"],
+            properties: {
+                pageSize: { type: "string" },
+                page: { type: "string" },
+                sortCol: { type: "string" },
+                sort: { type: "string" }
+            }
+        },
+      },
+    },
+  };
+  

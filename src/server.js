@@ -1,0 +1,63 @@
+require('dotenv').config();
+const express = require('express');
+const app =  express();
+require('express-async-errors');
+require('./database/db.connection')();
+
+
+const morgan =  require('morgan');
+app.use(morgan('dev'));
+
+app.use(express.json());
+
+const cors =  require('cors');
+app.use(cors());
+
+
+
+const helmet = require('helmet');
+app.use(helmet());
+
+
+const APIRouter =  express.Router();
+APIRouter.get('/', (req,res) => {
+    res.json({message : "API is Working.."});
+});
+
+
+app.use('/api',APIRouter);
+
+const routers = require('./routers/routers');
+APIRouter.use('/UserType',routers.userTypeRouter );
+APIRouter.use('/User',routers.userRouter);
+APIRouter.use('/Size',routers.sizeRouter);
+APIRouter.use('/Tag',routers.tagRouter);
+APIRouter.use('/Color',routers.colorRouter);
+APIRouter.use('/BrandLogo',routers.brandLogoRouter);
+APIRouter.use('/Category',routers.categoryRouter);
+
+APIRouter.get(`/${process.env.BRANDLOGO_IMAGE_PATH}/*`, (req, res) => {
+    const filePath = req.params[0];
+    res.sendFile(filePath, { root: `./${process.env.BRANDLOGO_IMAGE_PATH}` }, (err)=>{
+        if(err){
+            res.status(404).json({message : "Image Not Found"});
+        }
+    });
+})
+APIRouter.get(`/${process.env.CATEGORY_IMAGE_PATH}/*`, (req, res) => {
+    const filePath = req.params[0];
+    res.sendFile(filePath, { root: `./${process.env.CATEGORY_IMAGE_PATH}` }, (err)=>{
+        if(err){
+            res.status(404).json({message : "Image Not Found"});
+        }
+    });
+})
+
+//Swagger Implementation
+const swaggerJSDoc =  require('swagger-jsdoc');
+const swaggerUi =  require('swagger-ui-express');
+const options = require('./swagger');
+const swaggerDocs = swaggerJSDoc(options);
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocs));
+
+module.exports = app;
