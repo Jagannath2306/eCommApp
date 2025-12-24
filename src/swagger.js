@@ -24,6 +24,7 @@ const options = {
         "./src/routers/category.router.js",
         "./src/routers/product.router.js",
         "./src/routers/customer.router.js",
+        "./src/routers/contactus.router.js",
     ]
 }
 module.exports = options;

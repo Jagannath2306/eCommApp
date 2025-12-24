@@ -7,5 +7,17 @@ const brandLogoRouter = require("./brandlogo.router");
 const categoryRouter = require("./category.router");
 const productRouter = require("./product.router");
 const customerRouter = require("./customer.router");
+const contactusRouter = require("./contactus.router");
 
-module.exports = { userTypeRouter,userRouter,sizeRouter,tagRouter,colorRouter,brandLogoRouter,categoryRouter,productRouter,customerRouter }
+module.exports = {
+    userTypeRouter,
+    userRouter,
+    sizeRouter,
+    tagRouter,
+    colorRouter,
+    brandLogoRouter,
+    categoryRouter,
+    productRouter,
+    customerRouter,
+    contactusRouter
+}
