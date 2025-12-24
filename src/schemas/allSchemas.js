@@ -6,6 +6,7 @@ const colorSchema = require('./color.schema');
 const brandLogoSchema = require('./brandlogo.schema');
 const categorySchema = require('./category.schema');
 const productSchema = require('./product.schema');
+const customerSchema = require('./customer.schema');
 
 const AllSchemas = {
     components: {
@@ -25,6 +26,7 @@ const AllSchemas = {
             ...brandLogoSchema.components.schemas,
             ...categorySchema.components.schemas,
             ...productSchema.components.schemas,
+            ...customerSchema.components.schemas,
         }
     }
 }

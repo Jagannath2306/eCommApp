@@ -2,7 +2,6 @@ const User = require("../models/user.model.js");
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const { error } = require("winston");
 
 function validateUser(user) {
     const schema = Joi.object({
@@ -27,8 +26,6 @@ function validateLoginUser(user) {
 }
 
 const addUser = async (req, res) => {
-    //console.log(req.body);
-
     const result = validateUser(req.body);
 
     // if (result.error) {
@@ -55,7 +52,8 @@ const loginUser = async (req, res) => {
     }
 
     const { email, password } = result.value;
-    const user = await User.findOne({ email: email, isActive: true });
+    const user = await User.findOne({ email: email, isActive: true }).populate('userTypeId', 'name');
+
     if (user) {
         const isMatchPassword = bcrypt.compareSync(password, user.password);
         if (isMatchPassword) {
@@ -64,7 +62,8 @@ const loginUser = async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                userTypeId: user.userTypeId
+                userTypeId: user.userTypeId._id,
+                userTypeName: user.userTypeId.name
             }
             const token = jwt.sign(payload, process.env.JWT_KEY);
             return res.json({ message: "Login Success !!", token })
@@ -102,6 +101,7 @@ const updateUserById = async (req, res) => {
     }
 
     const loggedInUser = req.session.user;
+    
     await User.findOneAndUpdate({ _id: req.params.id, isActive: true }, { ...result.value, updatedBy: loggedInUser.id })
         .populate({ path: 'userTypeId', select: 'name' })
         .populate({ path: 'createdBy', select: 'firstName lastName email' })
@@ -133,7 +133,6 @@ const getAllUsers = async (req, res) => {
 
 const deleteUserById = async (req, res) => {
     const loggedInUser = req.session.user;
-
     let isExists = await User.findOne({ _id: req.params.id, isActive: true }, { name: 1 });
     if (isExists) {
         await User.findOneAndUpdate({ _id: req.params.id, isActive: true }, { isActive: false, updatedBy: loggedInUser.id });
@@ -146,7 +145,6 @@ const deleteUserById = async (req, res) => {
 
 const getUserById = async (req, res) => {
     const id = req.params.id;
-
     const user = await User.findOne({ _id: id, isActive: true })
      .populate({ path: 'userTypeId', select: 'name' })
         .populate({ path: 'createdBy', select: 'firstName lastName email' })
@@ -206,7 +204,6 @@ const resetUserPassword = async (req, res) => {
     const user = await User.findOne({ email: email, isActive: true });
     if (user) {
         const isPasswordMatch = bcrypt.compareSync(oldPassword, user.password);
-        console.log(isPasswordMatch);
 
         if (isPasswordMatch) {
             const newPassword = await bcrypt.hash(req.body.newPassword, 12);

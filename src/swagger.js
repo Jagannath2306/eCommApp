@@ -23,6 +23,7 @@ const options = {
         "./src/routers/brandlogo.router.js",
         "./src/routers/category.router.js",
         "./src/routers/product.router.js",
+        "./src/routers/customer.router.js",
     ]
 }
 module.exports = options;

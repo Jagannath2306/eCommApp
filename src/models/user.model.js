@@ -39,7 +39,7 @@ const UserSchema = mongoose.Schema({
     },
     createdBy: {
         type: mongoose.Types.ObjectId,
-        ref: 'ususermasterer',
+        ref: 'usermaster',
         //required: true
     },
     updatedBy: {

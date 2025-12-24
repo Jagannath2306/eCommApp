@@ -16,6 +16,24 @@ function userAuthMiddleware(req, res, next) {
     }
 }
 
+function customerAuthMiddleware(req, res, next) {
+    try {
+        const bearerToken = req.headers.authorization;
+        let token = bearerToken.split(" ");
+        const payload = jwt.verify(token[1], JWT_KEY);
+        req.session = {
+            customer: payload
+        } 
+        if (payload.userTypeName === "Customer") {
+            return next();
+        }
+        res.status(403);
+        return res.json({ "Authorization Error": "You are not authorized to access !!" });
+    } catch (err) {
+        res.status(401);
+        return res.json({ "Token Error": "Invalid Token !!" });
+    }
+}
 
 function adminAuthMiddleware(req, res, next) {
     try {
@@ -25,14 +43,12 @@ function adminAuthMiddleware(req, res, next) {
         req.session = {
             user: payload
         }
-
-        console.log(payload)
-
+        
         // Admin :-  userTypeId  1 
-        if (payload.userTypeId === "6943c81a7400b554630457fa") {
+        if (payload.userTypeName === "admin") {
             return next();
         }
-        res.status(401);
+        res.status(403);
         return res.json({ "Authorization Error": "You are not authorized to access !!" });
 
     } catch (err) {
@@ -41,4 +57,4 @@ function adminAuthMiddleware(req, res, next) {
     }
 }
 
-module.exports = { userAuthMiddleware, adminAuthMiddleware }  
+module.exports = { userAuthMiddleware, adminAuthMiddleware, customerAuthMiddleware }  

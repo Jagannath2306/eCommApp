@@ -36,6 +36,7 @@ APIRouter.use('/Color',routers.colorRouter);
 APIRouter.use('/BrandLogo',routers.brandLogoRouter);
 APIRouter.use('/Category',routers.categoryRouter);
 APIRouter.use('/Product',routers.productRouter);
+APIRouter.use('/Customer',routers.customerRouter);
 
 APIRouter.get(`/${process.env.BRANDLOGO_IMAGE_PATH}/*`, (req, res) => {
     const filePath = req.params[0];
