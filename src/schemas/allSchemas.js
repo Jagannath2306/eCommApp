@@ -8,6 +8,7 @@ const categorySchema = require('./category.schema');
 const productSchema = require('./product.schema');
 const customerSchema = require('./customer.schema');
 const contactusSchema = require('./contactus.schema');
+const customerAddressSchema = require('./customeraddress.schema');
 
 const AllSchemas = {
     components: {
@@ -29,6 +30,7 @@ const AllSchemas = {
             ...productSchema.components.schemas,
             ...customerSchema.components.schemas,
             ...contactusSchema.components.schemas,
+            ...customerAddressSchema.components.schemas,
         }
     }
 }

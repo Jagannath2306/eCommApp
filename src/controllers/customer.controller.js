@@ -101,8 +101,12 @@ const updateCustomerProfile = async (req, res) => {
         }
 
         const loggedInUser = req.session.customer;
-        await Customer.findOneAndUpdate({ _id: loggedInUser.id }, result.value);
-        res.json({ message: "Profile Updated Successfully !!" });
+        const customer = await Customer.findOneAndUpdate({ _id: loggedInUser.id }, result.value);
+        if (customer) {
+            res.status(200).json({ message: "Profile Updated Successfully !!" });
+        } else {
+            res.status(402).json({ error: "Data not found !!" });
+        }
     });
 
 }
