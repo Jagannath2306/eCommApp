@@ -1,22 +1,24 @@
 module.exports = {
     components: {
         schemas: {
-            InsertTag: {
+            InsertProductStatusMapping: {
                 type: "object",
-                required: ['name'],
+                required: ['productId', 'statusId'],
                 properties: {
-                    name: { type: "string" }
+                    productId: { type: "string" },
+                    statusId: { type: "string" }
                 }
             },
-            UpdateTag: {
+            UpdateProductStatusMapping: {
                 type: "object",
-                required: ['id', 'name'],
+                required: ['id', 'productId', 'statusId'],
                 properties: {
                     id: { type: "string" },
-                    name: { type: "string" }
+                    productId: { type: "string" },
+                    statusId: { type: "string" }
                 }
             },
-            GetAllTags: {
+            GetAllProductStatusMapping: {
                 type: "object",
                 required: ['pageSize', 'page', "sortCol", "sort"],
                 properties: {
@@ -26,7 +28,14 @@ module.exports = {
                     sort: { type: "string" }
                 }
             },
-            DeleteTag: {
+            GetProductStatusMappingById: {
+                type: "object",
+                required: ['id'],
+                properties: {
+                    id: { type: "string" }
+                }
+            },
+            DeleteProductStatusMapping: {
                 type: "object",
                 required: ['id'],
                 properties: {

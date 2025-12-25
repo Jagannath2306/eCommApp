@@ -1,11 +1,12 @@
-const ProductMasterStatus = require('../models/productmasterstatus.model');
+const ProductStatusMapping = require('../models/productstatusmapping.model');
 const Joi = require('joi');
 
-const saveProductMasterStatus = async (req, res) => {
+const saveProductStatusMapping = async (req, res) => {
     const loggedInUser = req.session.user;
 
     const Schema = Joi.object({
-        name: Joi.string().min(2).max(20).required()
+        productId: Joi.string().required(),
+        statusId: Joi.string().required()
     });
 
     const result = Schema.validate(req.body);
@@ -16,23 +17,23 @@ const saveProductMasterStatus = async (req, res) => {
         return res.status(401).json({ success: false, message: "Unauthorized access" });
     }
 
-    const name = result.value.name;
-    let isExist = await ProductMasterStatus.isExists(name);
+    let isExist = await ProductStatusMapping.isExists(result.value.productId, result.value.statusId);
     if (!isExist) {
-        let productmasterstatus = await new ProductMasterStatus({ ...result.value, createdBy: loggedInUser.id }).save();
-        res.status(201).json({ success: true, message: "Product Master Status Saved Successfully !!" });
+        let productstatusmapping = await new ProductStatusMapping({ ...result.value, createdBy: loggedInUser.id }).save();
+        res.status(201).json({ success: true, message: "Product Status Mapping Saved Successfully !!" });
     } else {
-        return res.status(400).json({ success: false, message: `Product Master Status Name ${name} already exists !!` });
+        return res.status(400).json({ success: false, message: `Product Status Mapping already exists !!` });
     }
 }
 
 
-const updateProductMasterStatus = async (req, res) => {
+const updateProductStatusMapping = async (req, res) => {
     const loggedInUser = req.session.user;
 
     const Schema = Joi.object({
         id: Joi.string().required(),
-        name: Joi.string().min(2).max(20).required()
+        productId: Joi.string().required(),
+        statusId: Joi.string().required()
     });
 
     const result = Schema.validate(req.body);
@@ -43,20 +44,19 @@ const updateProductMasterStatus = async (req, res) => {
     if (!loggedInUser || !loggedInUser.id) {
         return res.status(401).json({ success: false, message: "Unauthorized access" });
     }
-    const name = result.value.name;
-    const id = result.value.id;
+    const { productId, statusId, id } = result.value;
 
 
-    let isExists = await ProductMasterStatus.isExists(name, id);
+    let isExists = await ProductStatusMapping.isExists(productId, statusId, id);
     if (!isExists) {
-        await ProductMasterStatus.findOneAndUpdate({ _id: id }, { name: name, updatedBy: loggedInUser.id });
-        res.status(201).json({ success: true, message: "Product Master Status Updated Successfully !!" });
+        await ProductStatusMapping.findOneAndUpdate({ _id: id }, { productId: productId, statusId: statusId, updatedBy: loggedInUser.id });
+        res.status(201).json({ success: true, message: "Product Status Mapping Updated Successfully !!" });
     } else {
-       return res.status(400).json({ success: false, message: `Product Master Status Name ${name} already exists !!` });
+       return res.status(400).json({ success: false, message: `Product Status Mapping already exists !!` });
     }
 }
 
-const getAllProductMasterStatus = async (req, res) => {
+const getAllProductStatusMapping = async (req, res) => {
     const schema = Joi.object({
         pageSize: Joi.number().min(5).required(),
         page: Joi.number().min(1).required(),
@@ -75,14 +75,16 @@ const getAllProductMasterStatus = async (req, res) => {
     const sortObject = {};
     sortObject[sortCol] = sortBy === 'asc' ? 1 : -1;
 
-    const rows = await ProductMasterStatus.find({ isActive: true })
+    const rows = await ProductStatusMapping.find({ isActive: true })
         .sort(sortObject)
         .skip(skipCount)
         .limit(limitVal)
+        .populate({ path: 'productId', select: 'name code title price salePrice shortDetails description quantity discount isNewItem isSale imagePaths isActive' })
+        .populate({ path: 'statusId', select: 'name' })
         .populate({ path: 'createdBy', select: 'firstName lastName email' })
         .populate({ path: 'updatedBy', select: 'firstName lastName email' });
     let count = 0;
-    count = await ProductMasterStatus.countDocuments({ isActive: true });
+    count = await ProductStatusMapping.countDocuments({ isActive: true });
     return res.status(200).json({
         success: true,
         data: rows,
@@ -95,7 +97,7 @@ const getAllProductMasterStatus = async (req, res) => {
 }
 
 
-const getProductMasterStatusById = async (req, res) => {
+const getProductStatusMappingById = async (req, res) => {
       const Schema = Joi.object({
         id: Joi.string().required()
     });
@@ -106,17 +108,19 @@ const getProductMasterStatusById = async (req, res) => {
     }
     const id = result.value.id;
 
-    const productmasterstatus = await ProductMasterStatus.findOne({ _id: id, isActive: true })
+    const productstatusmapping = await ProductStatusMapping.findOne({ _id: id, isActive: true })
+        .populate({ path: 'productId', select: 'name code title price salePrice shortDetails description quantity discount isNewItem isSale imagePaths isActive' })
+        .populate({ path: 'statusId', select: 'name' })
         .populate({ path: 'createdBy', select: 'firstName lastName email' })
         .populate({ path: 'updatedBy', select: 'firstName lastName email' });
-    if (productmasterstatus) {
-        res.status(200).json({success: true, data: productmasterstatus});
+    if (productstatusmapping) {
+        res.status(200).json({success: true, data: productstatusmapping});
     } else {
         res.status(402).json({ success: false, message: "Data not found" });
     }
 }
 
-const deleteProductMasterStatus = async (req, res) => {
+const deleteProductStatusMapping = async (req, res) => {
     const loggedInUser = req.session.user;
 
     const Schema = Joi.object({
@@ -128,15 +132,13 @@ const deleteProductMasterStatus = async (req, res) => {
         return res.status(400).send({ success: false, message: result.error.details[0].message });
     }
 
-    const userTypeId = result.value.id;
-
-    let isExists = await ProductMasterStatus.findOne({ _id: userTypeId, isActive: true }, { name: 1 });
+    let isExists = await ProductStatusMapping.findOne({ _id: result.value.id, isActive: true }, { productId: 1 });
     if (isExists) {
-        await ProductMasterStatus.findOneAndUpdate({ _id: userTypeId }, { isActive: false, updatedBy: loggedInUser.id });
-        res.status(201).json({ success: true, message: "Product Master Status Deleted Successfully !!" });
+        await ProductStatusMapping.findOneAndUpdate({ _id: result.value.id, isActive: true }, { isActive: false, updatedBy: loggedInUser.id });
+        res.status(201).json({ success: true, message: "Product Status Mapping Deleted Successfully !!" });
     } else {
       return  res.status(402).json({ success: false, message: `Record not found to delete !!` });
     }
 }
 
-module.exports = { saveProductMasterStatus, updateProductMasterStatus, getAllProductMasterStatus, getProductMasterStatusById, deleteProductMasterStatus };
+module.exports = { saveProductStatusMapping, updateProductStatusMapping, getAllProductStatusMapping, getProductStatusMappingById, deleteProductStatusMapping };

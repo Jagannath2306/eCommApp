@@ -1,14 +1,14 @@
 module.exports = {
     components: {
         schemas: {
-            InsertTag: {
+            InsertProductMasterStatus: {
                 type: "object",
                 required: ['name'],
                 properties: {
                     name: { type: "string" }
                 }
             },
-            UpdateTag: {
+            UpdateProductMasterStatus: {
                 type: "object",
                 required: ['id', 'name'],
                 properties: {
@@ -16,7 +16,7 @@ module.exports = {
                     name: { type: "string" }
                 }
             },
-            GetAllTags: {
+            GetAllProductMasterStatus: {
                 type: "object",
                 required: ['pageSize', 'page', "sortCol", "sort"],
                 properties: {
@@ -26,7 +26,14 @@ module.exports = {
                     sort: { type: "string" }
                 }
             },
-            DeleteTag: {
+            GetProductMasterStatusById: {
+                type: "object",
+                required: ['id'],
+                properties: {
+                    id: { type: "string" }
+                }
+            },
+            DeleteProductMasterStatus: {
                 type: "object",
                 required: ['id'],
                 properties: {
