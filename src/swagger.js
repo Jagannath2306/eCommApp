@@ -30,6 +30,7 @@ const options = {
         "./src/routers/productstatusmapping.router.js",
         "./src/routers/modulemaster.router.js",
         "./src/routers/submodulemaster.router.js",
+        "./src/routers/pagemaster.router.js",
     ]
 }
 module.exports = options;
