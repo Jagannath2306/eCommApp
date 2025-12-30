@@ -31,6 +31,7 @@ const options = {
         "./src/routers/modulemaster.router.js",
         "./src/routers/submodulemaster.router.js",
         "./src/routers/pagemaster.router.js",
+        "./src/routers/userpagerights.router.js",
     ]
 }
 module.exports = options;

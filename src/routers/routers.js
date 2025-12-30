@@ -14,6 +14,7 @@ const productstatusmappingRoute = require("./productstatusmapping.router");
 const modulemasterRoute = require("./modulemaster.router");
 const submodulemasterRoute = require("./submodulemaster.router");
 const pagemasterRoute = require("./pagemaster.router");
+const userpagerightsRoute = require("./userpagerights.router");
 
 module.exports = {
     userTypeRouter,
@@ -31,5 +32,6 @@ module.exports = {
     productstatusmappingRoute,
     modulemasterRoute,
     submodulemasterRoute,
-    pagemasterRoute
+    pagemasterRoute,
+    userpagerightsRoute
 }

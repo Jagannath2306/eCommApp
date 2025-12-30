@@ -14,6 +14,7 @@ const productstatusmappingSchema = require('./productstatusmapping.schema');
 const modulemasterSchema = require('./modulemaster.schema');
 const submodulemasterSchema = require('./submodulemaster.schema');
 const pagemasterSchema = require('./pagemaster.schema');
+const userpagerightsSchema = require('./userpagerights.schema');
 
 const AllSchemas = {
     components: {
@@ -40,7 +41,8 @@ const AllSchemas = {
             ...productstatusmappingSchema.components.schemas,
             ...modulemasterSchema.components.schemas,
             ...submodulemasterSchema.components.schemas,
-            ...pagemasterSchema.components.schemas
+            ...pagemasterSchema.components.schemas,
+            ...userpagerightsSchema.components.schemas
         }
     }
 }
