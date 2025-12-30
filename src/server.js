@@ -3,6 +3,7 @@ const express = require('express');
 const app =  express();
 require('express-async-errors');
 require('./database/db.connection')();
+const handleError =  require('./middlewares/error.handle.middleware');
 
 
 const morgan =  require('morgan');
@@ -70,6 +71,9 @@ APIRouter.get(`/${process.env.MENU_ICON_IMAGE_PATH}/*`, (req, res) => {
         }
     });
 })
+
+// error handling middleware
+app.use(handleError);
 
 //Swagger Implementation
 const swaggerJSDoc =  require('swagger-jsdoc');
