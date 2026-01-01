@@ -1,24 +1,22 @@
 module.exports = {
     components: {
         schemas: {
-            InsertColor: {
+            InsertPaymentType: {
                 type: "object",
-                required: ['name', 'code'],
+                required: ['name'],
                 properties: {
-                    name: { type: "string" },
-                    code: { type: "string" }
+                    name: { type: "string" }
                 }
             },
-            UpdateColor: {
+            UpdatePaymentType: {
                 type: "object",
-                required: ['id', 'name', 'code'],
+                required: ['id', 'name'],
                 properties: {
                     id: { type: "string" },
-                    name: { type: "string" },
-                    code: { type: "string" }
+                    name: { type: "string" }
                 }
             },
-            GetAllColors: {
+            GetAllPaymentTypes: {
                 type: "object",
                 required: ['pageSize', 'page', "sortCol", "sort"],
                 properties: {
@@ -39,7 +37,14 @@ module.exports = {
                     }
                 }
             },
-            DeleteColor: {
+            GetPaymentTypeById: {
+                type: "object",
+                required: ['id'],
+                properties: {
+                    id: { type: "string" }
+                }
+            },
+            DeletePaymentType: {
                 type: "object",
                 required: ['id'],
                 properties: {

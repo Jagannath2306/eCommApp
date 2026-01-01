@@ -1,24 +1,22 @@
 module.exports = {
     components: {
         schemas: {
-            InsertColor: {
+            InsertOrderStatus: {
                 type: "object",
-                required: ['name', 'code'],
+                required: ['name'],
                 properties: {
-                    name: { type: "string" },
-                    code: { type: "string" }
+                    name: { type: "string" }
                 }
             },
-            UpdateColor: {
+            UpdateOrderStatus: {
                 type: "object",
-                required: ['id', 'name', 'code'],
+                required: ['id', 'name'],
                 properties: {
                     id: { type: "string" },
-                    name: { type: "string" },
-                    code: { type: "string" }
+                    name: { type: "string" }
                 }
             },
-            GetAllColors: {
+            GetAllOrderStatuses: {
                 type: "object",
                 required: ['pageSize', 'page', "sortCol", "sort"],
                 properties: {
@@ -39,7 +37,14 @@ module.exports = {
                     }
                 }
             },
-            DeleteColor: {
+             GetOrderStatusById: {
+                type: "object",
+                required: ['id'],
+                properties: {
+                    id: { type: "string" }
+                }
+            },
+            DeleteOrderStatus: {
                 type: "object",
                 required: ['id'],
                 properties: {

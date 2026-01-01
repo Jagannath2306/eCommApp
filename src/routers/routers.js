@@ -15,6 +15,9 @@ const modulemasterRoute = require("./modulemaster.router");
 const submodulemasterRoute = require("./submodulemaster.router");
 const pagemasterRoute = require("./pagemaster.router");
 const userpagerightsRoute = require("./userpagerights.router");
+const paymenttypeRoute = require("./paymenttype.router");
+const paymentstatusRoute = require("./paymentstatus.router");
+const orderstatusRoute = require("./orderstatus.router");
 
 module.exports = {
     userTypeRouter,
@@ -33,5 +36,8 @@ module.exports = {
     modulemasterRoute,
     submodulemasterRoute,
     pagemasterRoute,
-    userpagerightsRoute
+    userpagerightsRoute,
+    paymenttypeRoute,
+    paymentstatusRoute,
+    orderstatusRoute
 }

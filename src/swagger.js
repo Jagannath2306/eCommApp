@@ -32,6 +32,9 @@ const options = {
         "./src/routers/submodulemaster.router.js",
         "./src/routers/pagemaster.router.js",
         "./src/routers/userpagerights.router.js",
+        "./src/routers/paymenttype.router.js",
+        "./src/routers/paymentstatus.router.js",
+        "./src/routers/orderstatus.router.js"
     ]
 }
 module.exports = options;

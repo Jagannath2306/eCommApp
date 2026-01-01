@@ -15,6 +15,9 @@ const modulemasterSchema = require('./modulemaster.schema');
 const submodulemasterSchema = require('./submodulemaster.schema');
 const pagemasterSchema = require('./pagemaster.schema');
 const userpagerightsSchema = require('./userpagerights.schema');
+const paymenttypeSchema = require('./paymenttype.schema');
+const paymentstatusSchema = require('./paymentstatus.schema');
+const orderstatusSchema = require('./orderstatus.schema');
 
 const AllSchemas = {
     components: {
@@ -42,7 +45,10 @@ const AllSchemas = {
             ...modulemasterSchema.components.schemas,
             ...submodulemasterSchema.components.schemas,
             ...pagemasterSchema.components.schemas,
-            ...userpagerightsSchema.components.schemas
+            ...userpagerightsSchema.components.schemas,
+            ...paymenttypeSchema.components.schemas,
+            ...paymentstatusSchema.components.schemas,
+            ...orderstatusSchema.components.schemas
         }
     }
 }
